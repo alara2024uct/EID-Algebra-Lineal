@@ -1,7 +1,9 @@
 import pandas as pd
-# Importamos tus funciones (ajusta el nombre del archivo si es necesario)
-from carga_datos import cargar, convertir_a_matriz 
-from recomendaciones import calculo_matriz_similitud
+import numpy as np
+# Importamos tus funciones (ajusta el nombre de los archivos si es necesario)
+from carga_datos import cargar
+from generador_matrices import calculo_matriz_similitud, convertir_a_matriz
+from recomendaciones import recomendaciones
 
 def probar_modulo_carga():
     print("--- INICIANDO PRUEBA DE CARGA ---")
@@ -15,7 +17,7 @@ def probar_modulo_carga():
     
     # Pasos de control (Aserciones)
     assert not df.empty, "Error: El DataFrame no debería estar vacío."
-    assert "id_usuario" in df.columns, "Falta la columna usuario_id"
+    assert "id_usuario" in df.columns, "Falta la columna id_usuario"
     print("✓ Paso 1: El archivo CSV se lee correctamente.")
 
     # 2. Probar la conversión a matriz de interacción
@@ -32,13 +34,27 @@ def probar_modulo_carga():
     assert voto_faltante == 0, "Error: Los valores faltantes no se están rellenando con 0."
     print("✓ Paso 2: La matriz se pivota y rellena con ceros correctamente.")
     
-    print("\nTest de carga exitoso")
-    print()
+    print("\nTest de carga exitoso\n")
 
+    # 3. Probar el cálculo de la matriz de similitud
     matriz_similitud = calculo_matriz_similitud(matriz)
-    print("Matriz similitud entre usuarios:")
-    print()
+    print("--- MATRIZ DE SIMILITUD ENTRE USUARIOS ---")
     print(matriz_similitud)
+    print("\n✓ Paso 3: Matriz de similitud calculada correctamente.\n")
+
+    # 4. PROBAR EL SISTEMA DE RECOMENDACIONES
+    print("--- PROBANDO MOTOR DE RECOMENDACIONES ---")
+    usuario_test = 1
+    # Solicitamos 2 recomendaciones para ver el orden predictivo de las películas no vistas
+    top_rec = recomendaciones(usuario_test, matriz, matriz_similitud, n_recomendaciones=2)
+    
+    print(f"\n--- TOP RECOMENDACIONES PARA EL USUARIO {usuario_test} ---")
+    if not top_rec.empty:
+        for idx, (id_pelicula, puntaje) in enumerate(top_rec.items(), 1):
+            print(f"{idx}. Película ID: {id_pelicula} | Puntaje Predicho: {puntaje:.4f}")
+        print("\n✓ Paso 4: Recomendaciones generadas y ordenadas con éxito.")
+    else:
+        print("No hay recomendaciones para mostrar.")
 
 if __name__ == "__main__":
     probar_modulo_carga()

@@ -1,6 +1,6 @@
 #Módulo para carga de datos 
 
-import pandas as pd    
+import pandas as pd        #Importa modulo pandas para trabajar con el archivo con los datos a cargar
 
 def cargar(ruta: str) -> pd.DataFrame:
 
@@ -12,30 +12,8 @@ def cargar(ruta: str) -> pd.DataFrame:
         return df
 
     except FileNotFoundError:
-        print("No se pudo cargar el archivo")
+        print("No se pudo cargar el archivo")    #Si no encuentra el archivo, arroja un error
         return pd.DataFrame
-
-
-def convertir_a_matriz(df: pd.DataFrame) -> pd.DataFrame:
-
-    if df.empty:
-        print("Datos vacios, no se pudo construir la matriz")
-        return pd.DataFrame
-    
-
-    print("Construyendo matriz")
-
-    matriz = df.pivot(
-                      index='id_usuario', 
-                      columns='id_pelicula',
-                      values='calificacion'
-                      )
-
-    matriz = matriz.fillna(0)      #Rellena espacio vacios con 0s
-
-    print("Matriz creada correctamente")
-
-    return matriz      #Devuelve la matriz
 
 
 
