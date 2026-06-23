@@ -13,9 +13,9 @@ def convertir_a_matriz(df: pd.DataFrame) -> pd.DataFrame:        #Convierte los 
     print("Construyendo matriz")
 
     matriz = df.pivot(
-                      index='id_usuario', 
-                      columns='id_pelicula',       #Construye la matriz
-                      values='calificacion'
+                      index='userId', 
+                      columns='movieId',       #Construye la matriz usando los nombres de los datos del .csv de MovieLens
+                      values='rating'
                       )
 
     matriz = matriz.fillna(0)      #Rellena espacio vacios con 0s

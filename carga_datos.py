@@ -14,6 +14,11 @@ def cargar(ruta: str) -> pd.DataFrame:
     except FileNotFoundError:
         print("No se pudo cargar el archivo")    #Si no encuentra el archivo, arroja un error
         return pd.DataFrame
+    
+def cargar_peliculas(ruta: str) -> pd.DataFrame:   #Funcion para cargar el .csv de las peliculas
+
+    print(f"Cargando peliculas")
+    return pd.read_csv(ruta)      #Lee la ruta del archivo
 
 
 
